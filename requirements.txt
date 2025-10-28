@@ -1,0 +1,9 @@
+pandas>=1.2
+numpy>=1.19
+scikit-learn>=1.0
+lightgbm>=3.3
+joblib>=1.0
+scipy>=1.5
+matplotlib>=3.3
+seaborn>=0.11
+plotly>=5.0.0
