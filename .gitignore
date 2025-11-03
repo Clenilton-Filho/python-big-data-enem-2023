@@ -6,6 +6,7 @@ env/
 
 # Arquivos muito grandes
 /modelos/randomforest_enem_2023.joblib
+/dados/enem_2023.csv
 /dados/enem_2023_limpo.csv
 
 # IDE

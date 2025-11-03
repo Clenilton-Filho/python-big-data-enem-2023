@@ -23,7 +23,7 @@ from sklearn.metrics import mean_absolute_error, r2_score
 from lightgbm import LGBMRegressor
 
 # Carregando a base limpa
-print(f"--- Carregando o csv ---")
+print(f"\n--- Carregando o csv ---")
 
 df = pd.read_csv("./dados/enem_2023_limpo.csv")
 
@@ -37,16 +37,16 @@ target = 'nota_media'
 
 print("\nFeatures usadas:", features)
 
-# Codifica variáveis de categoria (one-hot)
+# Codificando as variáveis de categoria para que os modelos entendam
 X = pd.get_dummies(df[features].fillna('NA'), drop_first=True)
 
-# Garante que o alvo está em float
+# Garantindo que o alvo está em float
 y = df[target].astype(float)
 
 # Dividindo dados de treino e teste
 X_train, X_test, y_train, y_test = train_test_split(
 
-    # Definindo tamanho do teste como 20% e random_state para consistência de resultados
+    # Definindo tamanho do teste como 20% e random_state para consistência entre resultados
     X, y, test_size=0.2, random_state=42
 )
 
@@ -134,10 +134,10 @@ print("\n\n--- Treino com o modelo MiniBatchKMeans (Não supervisionado) ---")
 # Mas de forma mais eficiente para quantidades muito grandes de dados,
 # Usando quantidades pequenas de amostras (batches) por vez
 
-# 20 clusters, uma quantidade razoável
+# 6 clusters, quantidade testada com o método elbow
 # batch_size é a quantidade de dados em cada batch, 256 nesse caso
 # n_init=10 para evitar avisos e melhorar a estabilidade
-kmeans = MiniBatchKMeans(n_clusters=20, random_state=42, batch_size=256, n_init=10)
+kmeans = MiniBatchKMeans(n_clusters=6, random_state=42, batch_size=256, n_init=10)
 
 # Treina o K-Means só com os dados de treino
 kmeans.fit(X_train)
@@ -156,23 +156,19 @@ X_train_clusters['perfil_participante'] = clusters_train
 clusters_test = kmeans.predict(X_test)
 X_test_clusters['perfil_participante'] = clusters_test
 
-# Atualiza e salva a lista de colunas para que o script de inputs use
-# exatamente as mesmas colunas que o modelo foi treinado (inclui o cluster)
+# Salva a lista de colunas para que o script de inputs use
+# exatamente as mesmas colunas que o modelo usou, incluindo os clusters
 joblib.dump(list(X_train_clusters.columns), os.path.join('./modelos', "features_colunas.joblib"))
-print("Lista de colunas atualizada com cluster e salva")
+print("\nLista de colunas com cluster salva")
 
 
 # --- Treinamento e resultados com a nova coluna---
 
-print("\n\n--- Novo treino dos modelos supervisionados, agora com clusters ---")
-
-# Criando a pasta para salvar os modelos finais
-if not os.path.exists("../modelos"):
-    os.mkdir("../modelos")
+print("\n--- Novo treino dos modelos supervisionados, agora com clusters ---")
 
 # Salvando o modelo
-joblib.dump(kmeans, os.path.join("../modelos", "minibatchkmeans_enem_2023.joblib"))
-print("Modelo K-Means salvo.")
+joblib.dump(kmeans, os.path.join("./modelos", "minibatchkmeans_enem_2023.joblib"))
+print("\nModelo K-Means salvo.")
 
 for nome, modelo in modelos:
 
