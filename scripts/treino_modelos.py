@@ -52,30 +52,32 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 # --- Modelos ---
 
-# Modelo básico e rápido que usa linhas para predição
+# LinearRegression - Modelo básico e rápido que usa linhas para predição
 # ele tenta encontrar a melhor linha reta que correlacione as diferentes features
 lr = LinearRegression()
 
-# Modelo RandomForestRegressor funciona usando um número especificado
+
+# RandomForestRegressor - Modelo que funciona usando um número especificado
 # de árvores de decisão que classificam os dados de maneira aleatória por árvore
-# cada árvore só pode escolher uma das decisões fez para entregar ao modelo
+# cada árvore só pode escolher uma das decisões que fez para entregar ao modelo
 
 # Usando uma configuração que foi testada e aprovada em desempenho e velocidade
 rf_otimizado = RandomForestRegressor(
     n_estimators=50,        # número de árvores reduzido, mas eficiente
     max_samples=0.3,        # cada árvore usa 30% dos dados, acelerando o processo
-    max_depth=20,           # limite de decisões para evitar overfit (sobrecarregamento)
-    min_samples_leaf=5,     # mínimo de folhas para também evitar overfit
-    n_jobs=-1,              # usa todos os processadores
-    bootstrap=True,         # método de obtenção das amostras
+    max_depth=20,           # limite de decisões para evitar sobrecarregamento
+    min_samples_leaf=5,     # mínimo de folhas para também evitar sobrecarregamento
+    n_jobs=-1,              # usando todos os processadores
+    bootstrap=True,         # método para obtenção das amostras
     random_state=42,
 )
 
-# Modelo muito leve que aplica árvores de decisão em sequência
+
+# LightGBM - Modelo muito leve que aplica árvores de decisão em sequência
 # cada árvore vai melhorar o resultado olhando para a árvore anterior
 # e corrigindo os possíveis erros dela
 
-# Aumentamos alguns parâmetros para tentar melhorar o desempenho
+# Aumentando alguns parâmetros para tentar melhorar o desempenho
 # demora mais, mas pode aumentar o r²
 lgbm_precisao = LGBMRegressor(
     n_estimators=500,       # mais árvores
