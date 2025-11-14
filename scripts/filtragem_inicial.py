@@ -1,79 +1,79 @@
-import pandas as pd
-import numpy as np
+import pandas as pd 
+import numpy as np 
 
 # Carregando o csv com a lista de municípios em regiões metropolitanas
-df_rm = pd.read_csv('./dados/municipios_rm_limpo.csv')
-municipios_em_rm = set(pd.to_numeric(df_rm['codigo_ibge'], errors='coerce').dropna().astype(int))
+df_rm = pd.read_csv('./dados/municipios_rm_limpo.csv') 
+municipios_em_rm = set(pd.to_numeric(df_rm['codigo_ibge'], errors='coerce').dropna().astype(int)) 
 
 # --- filtragem ---
 # colunas relevantes
-colunas = [
+colunas = [ 
     # Colunas para filtro
-    'TP_PRESENCA_CN', 'TP_PRESENCA_CH', 'TP_PRESENCA_LC', 'TP_PRESENCA_MT',
-    'IN_TREINEIRO', 'TP_STATUS_REDACAO', 'TP_ST_CONCLUSAO',
+    'TP_PRESENCA_CN', 'TP_PRESENCA_CH', 'TP_PRESENCA_LC', 'TP_PRESENCA_MT', 
+    'IN_TREINEIRO', 'TP_STATUS_REDACAO', 'TP_ST_CONCLUSAO', 
 
-    # Colunas para o target do modelo
+    # Colunas para o target do modelo 
     'NU_NOTA_CN', 'NU_NOTA_CH', 'NU_NOTA_LC', 'NU_NOTA_MT', 'NU_NOTA_REDACAO',
-
+ 
     # Colunas da escola
-    'TP_DEPENDENCIA_ADM_ESC', 'TP_LOCALIZACAO_ESC', 'SG_UF_ESC', 'CO_MUNICIPIO_ESC',
-    'SG_UF_PROVA', 'CO_MUNICIPIO_PROVA', 'TP_ESCOLA',
+    'TP_DEPENDENCIA_ADM_ESC', 'TP_LOCALIZACAO_ESC', 'SG_UF_ESC', 'CO_MUNICIPIO_ESC', 
+    'SG_UF_PROVA', 'CO_MUNICIPIO_PROVA', 'TP_ESCOLA', 
 
     # Colunas do participante
-    'TP_LINGUA','TP_FAIXA_ETARIA', 'TP_COR_RACA', 'Q006', 'Q002', 'Q024','Q025'
+    'TP_LINGUA','TP_FAIXA_ETARIA', 'TP_COR_RACA', 'Q006', 'Q002', 'Q024','Q025' 
 ]
 
-df = pd.read_csv('./dados/enem_2023.csv', usecols=colunas, encoding='latin-1',
-                 sep=';', decimal=',', low_memory=False)
+df = pd.read_csv('./dados/enem_2023.csv', usecols=colunas, encoding='latin-1', 
+                 sep=';', decimal=',', low_memory=False) 
 
-# Um DataFrame novo é feito a partir da aplicação de filtros no original
-# usando .copy() para evitar warnings
-df_filtrado = df[
+# Um DataFrame novo é feito a partir da aplicação de filtros no original 
+# usando .copy() para evitar warnings 
+df_filtrado = df[  
 
-    # Somente participantes presentes em todas as provas para evitar outliers
-    (df['TP_PRESENCA_CN'] == 1) & (df['TP_PRESENCA_CH'] == 1) &
-    (df['TP_PRESENCA_LC'] == 1) & (df['TP_PRESENCA_MT'] == 1) &
+    # Somente participantes presentes em todas as provas para evitar outliers 
+    (df['TP_PRESENCA_CN'] == 1) & (df['TP_PRESENCA_CH'] == 1) &  
+    (df['TP_PRESENCA_LC'] == 1) & (df['TP_PRESENCA_MT'] == 1) &  
 
-    # Somente redações com nenhum problema, também para evitar outliers, que nesse caso seriam notas 0
-    (df['TP_STATUS_REDACAO'] == 1) &
+    # Somente redações com nenhum problema, também para evitar outliers, que nesse caso seriam notas 0 
+    (df['TP_STATUS_REDACAO'] == 1) & 
 
-    # Somente quem já concluiu ou estava concluindo o ensino médio naquele ano
-    # Isso garante que os participantes restantes já tiveram oportunidade de ver os conteúdos cobrados
-    (df['IN_TREINEIRO'] == 0) &
-    (df['TP_ST_CONCLUSAO'].isin([1, 2]))
-].copy()
-print(f"DataFrame após filtros de participantes: {df_filtrado.shape[0]} linhas.")
+    # Somente quem já concluiu ou estava concluindo o ensino médio naquele ano 
+    # Isso garante que os participantes restantes já tiveram oportunidade de ver os conteúdos cobrados 
+    (df['IN_TREINEIRO'] == 0) & 
+    (df['TP_ST_CONCLUSAO'].isin([1, 2])) 
+].copy() 
+print(f"DataFrame após filtros de participantes: {df_filtrado.shape[0]} linhas.") 
 
 # --- Preenchimento ---
-# se não houver informação de localização da escola do participante, usa a da prova
-df_filtrado['sigla_estado'] = df_filtrado['SG_UF_ESC'].fillna(df_filtrado['SG_UF_PROVA'])
+# se não houver informação de localização da escola do participante, usa a da prova 
+df_filtrado['sigla_estado'] = df_filtrado['SG_UF_ESC'].fillna(df_filtrado['SG_UF_PROVA']) 
 
-# O mesmo, agora com o município, além de garantir que seja um código numérico
+# O mesmo, agora com o município, além de garantir que seja um código numérico 
 df_filtrado['municipio'] = pd.to_numeric(df_filtrado['CO_MUNICIPIO_ESC'].fillna(df_filtrado['CO_MUNICIPIO_PROVA']), errors='coerce').astype('Int64')
 
 # Lista de capitais para a coluna de região do município
-capitais_ibge = {
-    2800308, 1501402, 3106200, 1400100, 5300108, 5002704, 5103403, 4106902, 4205407, 2304400, 5208707,
-    2507507, 1600303, 2704302, 1302603, 2408102, 1721000, 4314902, 1100205, 2611606, 1200401, 3304557,
-    2927408, 2111300, 3550308, 2211001, 3205309
+capitais_ibge = { 
+    2800308, 1501402, 3106200, 1400100, 5300108, 5002704, 5103403, 4106902, 4205407, 2304400, 5208707,  
+    2507507, 1600303, 2704302, 1302603, 2408102, 1721000, 4314902, 1100205, 2611606, 1200401, 3304557,  
+    2927408, 2111300, 3550308, 2211001, 3205309 
 }
 
-# Se for da lista de capitais, é mapeada como 'Capital'.
-# caso não for, verifica se está na lista de municípios em regiões metropolitanas. Se estiver, 'Metropolitana'
-# se não, é mapeada como 'Interior'
-def classificar_regiao(municipio):
+# Se for da lista de capitais, é mapeada como 'Capital'. 
+# caso não for, verifica se está na lista de municípios em regiões metropolitanas. Se estiver, 'Metropolitana' 
+# se não, é mapeada como 'Interior' 
+def classificar_regiao(municipio): 
     # Adiciona verificação para valores nulos
-    if pd.isna(municipio):
-        return 'Não Informado'
-    if municipio in capitais_ibge:
-        return 'Capital'
-    elif municipio in municipios_em_rm:
-        return 'Metropolitana'
-    else:
+    if pd.isna(municipio): 
+        return 'Não Informado' 
+    if municipio in capitais_ibge: 
+        return 'Capital' 
+    elif municipio in municipios_em_rm: 
+        return 'Metropolitana' 
+    else:  
         return 'Interior'
 
 # .apply() executa a função para cada município, criando a nova coluna de tipo de região.
-df_filtrado['tipo_regiao'] = df_filtrado['municipio'].apply(classificar_regiao)
+df_filtrado['tipo_regiao'] = df_filtrado['municipio'].apply(classificar_regiao) 
 
 # --- Mapeamentos para as outras features ---
 
@@ -98,15 +98,15 @@ df_filtrado['lingua'] = (
 
 # Coluna de categoria de renda, agrupando categorias
 df_filtrado['categoria_renda'] = ( 
-    df_filtrado['Q006'].map({ 
-        'A': 'Muito Baixa', 'B': 'Muito Baixa',     # Nenhuma Renda até 1 SM
-        'C': 'Baixa', 'D': 'Baixa',                 # > 1 SM até 2 SM
-        'E': 'Média-Baixa', 'F': 'Média-Baixa',     # > 2 SM até 3 SM
-        'G': 'Média', 'H': 'Média',                 # > 3 SM até 5 SM
-        'I': 'Média-Alta', 'J': 'Média-Alta',       # > 5 SM até 10 SM
-        'K': 'Alta', 'L': 'Alta', 'M': 'Alta', 'N': 'Alta', # > 10 SM até 20 SM
-        'O': 'Muito Alta', 'P': 'Muito Alta', 'Q': 'Muito Alta' # > 20 SM
-    }).fillna('Não informado')) 
+    df_filtrado['Q006'].map({  
+        'A': 'Muito Baixa', 'B': 'Muito Baixa',     # Nenhuma Renda até 1 SM 
+        'C': 'Baixa', 'D': 'Baixa',                 # > 1 SM até 2 SM 
+        'E': 'Média-Baixa', 'F': 'Média-Baixa',     # > 2 SM até 3 SM 
+        'G': 'Média', 'H': 'Média',                 # > 3 SM até 5 SM 
+        'I': 'Média-Alta', 'J': 'Média-Alta',       # > 5 SM até 10 SM 
+        'K': 'Alta', 'L': 'Alta', 'M': 'Alta', 'N': 'Alta', # > 10 SM até 20 SM 
+        'O': 'Muito Alta', 'P': 'Muito Alta', 'Q': 'Muito Alta' # > 20 SM 
+    }).fillna('Não informado'))  
 
 # Coluna de declaração de raça
 df_filtrado['raca'] = ( 
@@ -115,7 +115,7 @@ df_filtrado['raca'] = (
           3: 'Parda', 4: 'Amarela', 5: 'Indigena' } 
     ).fillna('Nao declarado')) 
  
-# Coluna de nível de escolaridade da mãe, agrupando algumas categorias
+# Coluna de nível de escolaridade da mãe, agrupando algumas categorias 
 df_filtrado['escolaridade_mae'] = (
     df_filtrado['Q002'].map( 
         { 'A': 'Nunca estudou', 'B': 'Fundamental Incompleto', 
