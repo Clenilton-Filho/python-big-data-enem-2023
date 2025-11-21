@@ -73,7 +73,7 @@ tipo_escola_input = get_user_input("Tipo de escola:", ['Federal', 'Estadual', 'P
 lingua_input = get_user_input("Língua estrangeira:", ['Inglês', 'Espanhol'])
 renda_input = get_user_input("Renda familiar:",
                              ['Muito Baixa', 'Baixa', 'Média-Baixa', 'Média', 'Média-Alta', 'Alta', 'Muito Alta'])
-raca_input = get_user_input("Como você se declara?",
+raca_input = get_user_input("Qual a sua raça?",
                             ['Branca', 'Preta', 'Parda', 'Amarela', 'Indigena', 'Nao declarado'])
 escolaridade_mae_input = get_user_input("Escolaridade da mãe:",
                                         ['Nunca estudou', 'Fundamental Incompleto', 'Fundamental Completo',
