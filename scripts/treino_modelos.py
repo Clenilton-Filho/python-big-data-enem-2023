@@ -16,7 +16,7 @@ from sklearn.cluster import MiniBatchKMeans
 
 # Módulo de métricas dos modelos
 # MAE e R² para os 3 supervisionados
-from sklearn.metrics import mean_absolute_error, r2_score
+from sklearn.metrics import mean_absolute_error,mean_absolute_percentage_error, r2_score
 
 # Modelo muito leve que implementa árvore de decisão (mais explicado depois)
 # É necessário ter instalado a biblioteca separadamente para usar
@@ -123,10 +123,17 @@ for nome, modelo in modelos:
     # Já o R² vai medir a porcentagem de variação entre as notas que o modelo consegue explicar
     r2 = r2_score(y_test, preds)
 
+    # Calcula a porcentagem de erro nas notas
+    mape = mean_absolute_percentage_error(y_test, preds)
+
+    # Transformamos em "Acurácia" subtraindo o MAPE de 1
+    acuracia = 1 - mape
+
     # Printando os resultados
     print(f"Tempo de treino: {tempo_treino:.2f}s | Tempo de predição: {tempo_pred:.2f}s")
-    print(f"MAE: {mae:.2f}")
-    print(f"R²: {r2:.4f}")
+    print(f'MAE (erro médio em pontos): {mae:.2f}')
+    print(f'Acurácia estimada (derivada do MAPE): {acuracia * 100:.2f}%')
+    print(f'R² (variação capturada): {r2 * 100:.2f}%')
 
 # --- Treinamento não supervisionado---
 
@@ -174,7 +181,7 @@ print("\nModelo K-Means salvo.")
 
 for nome, modelo in modelos:
 
-    print(f"\n--- Modelo (Com Cluster): {nome} ---")
+    print(f"\n--- Modelo (Com Clusters): {nome} ---")
     inicio = time.time()
     modelo.fit(X_train_clusters, y_train)
     tempo_treino = time.time() - inicio
@@ -185,12 +192,15 @@ for nome, modelo in modelos:
 
     mae = mean_absolute_error(y_test, preds)
     r2 = r2_score(y_test, preds)
+    mape = mean_absolute_percentage_error(y_test, preds)
+    acuracia = 1 - mape
 
     print(f"Tempo de treino: {tempo_treino:.2f}s | Tempo de predição: {tempo_pred:.2f}s")
-    print(f"MAE: {mae:.2f}")
-    print(f"R²: {r2:.4f}")
+    print(f'MAE (erro médio em pontos): {mae:.2f}')
+    print(f'Acurácia estimada (derivada do MAPE): {acuracia * 100:.2f}%')
+    print(f'R² (variação capturada): {r2 * 100:.2f}%')
 
-    # Salvando o modelo
+    # Salvando os modelos com clusters
     nome_arquivo = f"{nome.lower()}_enem_2023.joblib"
     caminho_arquivo = os.path.join("./modelos", nome_arquivo)
     joblib.dump(modelo, caminho_arquivo)
