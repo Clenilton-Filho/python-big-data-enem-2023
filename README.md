@@ -10,7 +10,8 @@
 - Victor - Análise de Dados
 - Clenilton - Modelos de Machine Learning
 - Solário - Coleta de inputs e Apresentação da Média 
-- Kairos - Documentação
+- Kairos - Documentação(relatório geral)
+  
 
 ### Pré-requisitos
 - Python 3.8+
