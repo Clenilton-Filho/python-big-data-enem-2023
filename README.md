@@ -15,12 +15,15 @@ Este projeto investiga como a desigualdade social influencia o desempenho no Exa
 
 O objetivo final foi a criação de um **Simulador de Nota Média** capaz de predizer o desempenho de um usuário com base em apenas 10 indicadores socioeconômicos.
 
+> 🚀 **Testar Online:** Acesse a versão com interface gráfica do simulador interativo diretamente no navegador:
+> 👉 [**https://enem-2023-predicao.streamlit.app/**](https://enem-2023-predicao.streamlit.app/)
+
 ---
 
 ### 👥 Autores
-* **Clenilton** (Modelagem ML)
+* **Clenilton** (Modelagem ML e Interface Gráfica)
 * **Misael** (Coleta e Tratamento)
-* **Solário** (Desenvolvimento do Simulador)
+* **Solário** (Simulador pelo terminal)
 * **Vitor** (Análise de Dados/EDA)
 * **Kairos** (Documentação)
 
@@ -87,7 +90,13 @@ pip install -r requirements.txt
 ---
 
 ## ⚡ Uso rápido
-- 🎯 Para testar o Simulador (Resultado Final)
+
+### 🌐 Opção 1: Simulador Web (Sem Instalação)
+Para testar a IA imediatamente através da interface gráfica:
+[**Clique aqui para abrir o Web App ↗**](https://enem-2023-predicao.streamlit.app/)
+
+### 💻 Opção 2: Rodar Localmente (Terminal)
+- 🎯 Para testar o Simulador via linha de comando:
 
 ```bash
 python scripts/inputs.py
