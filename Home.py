@@ -68,26 +68,19 @@ with col1:
     2.  **Analisar** correlações socioeconômicas.
     3.  **Modelar** um sistema de Inteligência Artificial capaz de prever a nota média.
     """)
-    
-    st.divider()
-    st.subheader("💡 Abaixo, os principais insight obtidos na análise: ")
-
-    st.write("Nota média por categoria de renda:")
-    st.image("imagens/media_por_categoria_renda.png", caption="Correlação observada: quanto maior a renda, maior a nota média.", use_container_width=True)
-
-    st.divider()
-
-    st.write("Nota média por tipo de escola:")
-    st.image("imagens/media_por_escola.png", caption="Escolas Federais e Privadas lideram.", width=500)
-
-    st.divider()
 
     st.info("""
     **Objetivo:** Criar um Simulador capaz de predizer o desempenho de um usuário 
     com base em apenas **10 indicadores socioeconômicos**.
     """)
 
+    st.divider()
+    st.subheader("🧩 Conclusão:")
+    st.write("""
+    É possível concluir que, utilizando apenas os dados socioeconômicos capturados, pode-se explicar quase **40% da variação** entre as notas médias de +2 milhões de participantes.
     
+    Isso indica que **fatores sociais que não estão sob controle do participante** são determinantes relevantes para o desempenho no ENEM.
+    """)
 
 # Informações técnicas
 with col2:
@@ -96,11 +89,4 @@ with col2:
     st.metric(label="Acurácia do Modelo", value="89.08%", help="Métrica derivada do MAPE (1 - Erro Percentual Absoluto Médio)")
     st.metric(label="Erro Médio (MAE)", value="57.04 pontos")
     st.metric(label="Variância Explicada (R²)", value="37.06%")
-    st.divider()
-    st.subheader("🧩 Conclusão:")
-    st.write("""
-    É possível concluir que, utilizando apenas os dados socioeconômicos capturados, pode-se explicar quase **40% da variação** entre as notas médias de +2 milhões de participantes.
-    
-    Isso indica que **fatores sociais que não estão sob controle do participante** são determinantes relevantes para o desempenho no ENEM.
-    """)
     st.caption("Modelo utilizado: LightGBM")

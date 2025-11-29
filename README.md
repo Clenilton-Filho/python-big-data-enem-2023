@@ -11,7 +11,7 @@
 ## 🔗 Acesse o App
 Clique abaixo para acessar a aplicação hospedada no Streamlit Cloud:
 
-[![Acessar Simulador](https://img.shields.io/badge/Acessar_App-Ver_Online-2ea44f?style=for-the-badge&logo=google-chrome)](#)
+[![Acessar Simulador](https://img.shields.io/badge/Acessar_App-Ver_Online-2ea44f?style=for-the-badge&logo=google-chrome)](https://enem-2023-predicao.streamlit.app/)
 
 ---
 
@@ -30,6 +30,15 @@ O sistema utiliza modelos de Machine Learning pré-treinados para estimar a nota
 * **🔮 Simulador Interativo:** Preencha formulários simples (Estado, Renda, Escola) e receba a predição em tempo real.
 * **📈 Dashboard Analytics:** Visualize os gráficos e insights gerados durante a análise exploratória dos dados.
 * **🧠 Motor de IA:** Roda um modelo **LightGBM** com 89% de acurácia estimada, capaz de capturar relações não-lineares entre renda e desempenho.
+
+---
+
+### 👥 Autores
+* **Clenilton** (Modelagem ML e Interface Gráfica)
+* **Misael** (Coleta e Tratamento)
+* **Solário** (Simulador em terminal)
+* **Vitor** (Análise de Dados/EDA)
+* **Kairos** (Documentação)
 
 ---
 
@@ -74,11 +83,12 @@ O modelo utilizado nesta interface obteve os seguintes resultados na base de tes
 ## 📂 Estrutura de Arquivos
 
 ```text
+├── .streamlit/              # Configurações do streamlit
+├── dados/                   # Dados já tratados
 ├── modelos/                 # Arquivos .joblib (IA treinada)
 ├── pages/                   # Páginas do aplicativo
-│   └── 1_🔮_Simulador.py
-├── imagens/                 # Assets visuais (gráficos)
-├── .streamlit/              # Configurações do streamlit
+│   └── 1_📈_Dashboard.py   # Gráficos interativos
+│   └── 2_🔮_Simulador.py   # Simulador de média
 ├── Home.py                  # Página inicial
 └── requirements.txt         # Dependências do app
 ```
